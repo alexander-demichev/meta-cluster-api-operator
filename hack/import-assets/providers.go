@@ -97,6 +97,30 @@ func (p *provider) getMetadataUrl() string {
 	)
 }
 
+func mutateMetadata(inputMetadata []byte) ([]byte, error) {
+	metadata := &clusterctlv1.Metadata{}
+	if err := yaml.Unmarshal(inputMetadata, metadata); err != nil {
+		return nil, err
+	}
+
+	if len(metadata.ReleaseSeries) == 0 {
+		return nil, fmt.Errorf("metadata.yaml does not contain release series")
+	}
+
+	metadata.ReleaseSeries = append(metadata.ReleaseSeries, clusterctlv1.ReleaseSeries{
+		Major:    99,
+		Minor:    99,
+		Contract: metadata.ReleaseSeries[0].Contract,
+	})
+
+	mutatedMetadata, err := yaml.Marshal(metadata)
+	if err != nil {
+		return nil, err
+	}
+
+	return mutatedMetadata, nil
+}
+
 // loadComponents loads components from the given provider.
 func (p *provider) loadComponents() error {
 	if p.Branch == "" {
@@ -155,7 +179,12 @@ func (p *provider) loadComponents() error {
 	if err != nil {
 		return err
 	}
-	p.metadata = rawMetadataResponse
+
+	// mutate metadata
+	p.metadata, err = mutateMetadata(rawMetadataResponse)
+	if err != nil {
+		return err
+	}
 
 	return err
 }
