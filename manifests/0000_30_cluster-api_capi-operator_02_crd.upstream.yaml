@@ -22,8 +22,8 @@ spec:
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .spec.version
-      name: Version
+    - jsonPath: .status.installedVersion
+      name: InstalledVersion
       type: string
     - jsonPath: .status.conditions[?(@.type=='Ready')].status
       name: Ready
@@ -1162,10 +1162,12 @@ spec:
                   name `aws` will fetch artifacts from https://github.com/kubernetes-sigs/cluster-api-provider-aws/releases.
                 properties:
                   selector:
-                    description: Selector to be used for fetching provider’s components
+                    description: 'Selector to be used for fetching provider’s components
                       and metadata from ConfigMaps stored inside the cluster. Each
                       ConfigMap is expected to contain components and metadata for
-                      a specific version only.
+                      a specific version only. Note: the name of the ConfigMap should
+                      be set to the version or to override this add a label like the
+                      following: provider.cluster.x-k8s.io/version=v1.4.3'
                     properties:
                       matchExpressions:
                         description: matchExpressions is a list of label selector
@@ -1211,9 +1213,8 @@ spec:
                   url:
                     description: URL to be used for fetching the provider’s components
                       and metadata from a remote Github repository. For example, https://github.com/{owner}/{repository}/releases
-                      The version of the release will be `ProviderSpec.Version` if
-                      defined otherwise the `latest` version will be computed and
-                      used.
+                      You must set `providerSpec.Version` field for operator to pick
+                      up desired version of the release from GitHub.
                     type: string
                 type: object
               manager:
@@ -1451,6 +1452,7 @@ spec:
                         important.
                       type: string
                   required:
+                  - lastTransitionTime
                   - status
                   - type
                   type: object
@@ -1458,6 +1460,10 @@ spec:
               contract:
                 description: Contract will contain the core provider contract that
                   the provider is abiding by, like e.g. v1alpha4.
+                type: string
+              installedVersion:
+                description: InstalledVersion is the version of the provider that
+                  is installed.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the latest generation observed
@@ -1501,8 +1507,8 @@ spec:
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .spec.version
-      name: Version
+    - jsonPath: .status.installedVersion
+      name: InstalledVersion
       type: string
     - jsonPath: .status.conditions[?(@.type=='Ready')].status
       name: Ready
@@ -2642,10 +2648,12 @@ spec:
                   name `aws` will fetch artifacts from https://github.com/kubernetes-sigs/cluster-api-provider-aws/releases.
                 properties:
                   selector:
-                    description: Selector to be used for fetching provider’s components
+                    description: 'Selector to be used for fetching provider’s components
                       and metadata from ConfigMaps stored inside the cluster. Each
                       ConfigMap is expected to contain components and metadata for
-                      a specific version only.
+                      a specific version only. Note: the name of the ConfigMap should
+                      be set to the version or to override this add a label like the
+                      following: provider.cluster.x-k8s.io/version=v1.4.3'
                     properties:
                       matchExpressions:
                         description: matchExpressions is a list of label selector
@@ -2691,9 +2699,8 @@ spec:
                   url:
                     description: URL to be used for fetching the provider’s components
                       and metadata from a remote Github repository. For example, https://github.com/{owner}/{repository}/releases
-                      The version of the release will be `ProviderSpec.Version` if
-                      defined otherwise the `latest` version will be computed and
-                      used.
+                      You must set `providerSpec.Version` field for operator to pick
+                      up desired version of the release from GitHub.
                     type: string
                 type: object
               manager:
@@ -2932,6 +2939,7 @@ spec:
                         important.
                       type: string
                   required:
+                  - lastTransitionTime
                   - status
                   - type
                   type: object
@@ -2939,6 +2947,10 @@ spec:
               contract:
                 description: Contract will contain the core provider contract that
                   the provider is abiding by, like e.g. v1alpha4.
+                type: string
+              installedVersion:
+                description: InstalledVersion is the version of the provider that
+                  is installed.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the latest generation observed
@@ -2982,8 +2994,8 @@ spec:
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .spec.version
-      name: Version
+    - jsonPath: .status.installedVersion
+      name: InstalledVersion
       type: string
     - jsonPath: .status.conditions[?(@.type=='Ready')].status
       name: Ready
@@ -4122,10 +4134,12 @@ spec:
                   name `aws` will fetch artifacts from https://github.com/kubernetes-sigs/cluster-api-provider-aws/releases.
                 properties:
                   selector:
-                    description: Selector to be used for fetching provider’s components
+                    description: 'Selector to be used for fetching provider’s components
                       and metadata from ConfigMaps stored inside the cluster. Each
                       ConfigMap is expected to contain components and metadata for
-                      a specific version only.
+                      a specific version only. Note: the name of the ConfigMap should
+                      be set to the version or to override this add a label like the
+                      following: provider.cluster.x-k8s.io/version=v1.4.3'
                     properties:
                       matchExpressions:
                         description: matchExpressions is a list of label selector
@@ -4171,9 +4185,8 @@ spec:
                   url:
                     description: URL to be used for fetching the provider’s components
                       and metadata from a remote Github repository. For example, https://github.com/{owner}/{repository}/releases
-                      The version of the release will be `ProviderSpec.Version` if
-                      defined otherwise the `latest` version will be computed and
-                      used.
+                      You must set `providerSpec.Version` field for operator to pick
+                      up desired version of the release from GitHub.
                     type: string
                 type: object
               manager:
@@ -4411,6 +4424,7 @@ spec:
                         important.
                       type: string
                   required:
+                  - lastTransitionTime
                   - status
                   - type
                   type: object
@@ -4418,6 +4432,10 @@ spec:
               contract:
                 description: Contract will contain the core provider contract that
                   the provider is abiding by, like e.g. v1alpha4.
+                type: string
+              installedVersion:
+                description: InstalledVersion is the version of the provider that
+                  is installed.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the latest generation observed
@@ -4461,8 +4479,8 @@ spec:
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .spec.version
-      name: Version
+    - jsonPath: .status.installedVersion
+      name: InstalledVersion
       type: string
     - jsonPath: .status.conditions[?(@.type=='Ready')].status
       name: Ready
@@ -5602,10 +5620,12 @@ spec:
                   name `aws` will fetch artifacts from https://github.com/kubernetes-sigs/cluster-api-provider-aws/releases.
                 properties:
                   selector:
-                    description: Selector to be used for fetching provider’s components
+                    description: 'Selector to be used for fetching provider’s components
                       and metadata from ConfigMaps stored inside the cluster. Each
                       ConfigMap is expected to contain components and metadata for
-                      a specific version only.
+                      a specific version only. Note: the name of the ConfigMap should
+                      be set to the version or to override this add a label like the
+                      following: provider.cluster.x-k8s.io/version=v1.4.3'
                     properties:
                       matchExpressions:
                         description: matchExpressions is a list of label selector
@@ -5651,9 +5671,8 @@ spec:
                   url:
                     description: URL to be used for fetching the provider’s components
                       and metadata from a remote Github repository. For example, https://github.com/{owner}/{repository}/releases
-                      The version of the release will be `ProviderSpec.Version` if
-                      defined otherwise the `latest` version will be computed and
-                      used.
+                      You must set `providerSpec.Version` field for operator to pick
+                      up desired version of the release from GitHub.
                     type: string
                 type: object
               manager:
@@ -5892,6 +5911,7 @@ spec:
                         important.
                       type: string
                   required:
+                  - lastTransitionTime
                   - status
                   - type
                   type: object
@@ -5899,6 +5919,10 @@ spec:
               contract:
                 description: Contract will contain the core provider contract that
                   the provider is abiding by, like e.g. v1alpha4.
+                type: string
+              installedVersion:
+                description: InstalledVersion is the version of the provider that
+                  is installed.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the latest generation observed

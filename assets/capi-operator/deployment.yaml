@@ -42,9 +42,8 @@ spec:
         - --metrics-bind-addr=127.0.0.1:8080
         - --leader-elect
         command:
-        - /manager
-        image: gcr.io/k8s-staging-cluster-api/operator-controller-amd64:dev
-        imagePullPolicy: Always
+        - /bin/cluster-api-operator
+        image: gcr.io/openshift-gce-devel/cluster-api-operator-amd64:dev
         name: manager
         resources:
           requests:

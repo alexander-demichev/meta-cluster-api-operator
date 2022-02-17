@@ -37,8 +37,8 @@ var (
 )
 
 const (
-	defaultImagesLocation         = "/etc/cluster-api-config-images/images.json"
-	defaultProvidersLocation      = "/etc/cluster-api-config-providers/providers-list.yaml"
+	defaultImagesLocation         = "./dev-images.json"
+	defaultProvidersLocation      = "./providers-list.yaml"
 	releaseVersionEnvVariableName = "RELEASE_VERSION"
 	unknownVersionValue           = "unknown"
 )
