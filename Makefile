@@ -18,7 +18,7 @@ verify: fmt lint
 test: verify unit
 
 # Build operator binaries
-build: operator user-data-secret-controller cluster-controller
+build: operator user-data-secret-controller cluster-controller kubeconfig-controller
 
 operator:
 	go build -o bin/cluster-capi-operator cmd/cluster-capi-operator/main.go
@@ -28,6 +28,9 @@ user-data-secret-controller:
 
 cluster-controller:
 	go build -o bin/cluster-controller cmd/cluster-controller/main.go
+
+kubeconfig-controller:
+	go build -o bin/kubeconfig-controller cmd/kubeconfig-controller/main.go
 
 unit:
 	hack/unit-tests.sh
