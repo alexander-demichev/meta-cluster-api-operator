@@ -48,6 +48,9 @@ func (r *ClusterReconciler) reconcileAzureCluster(ctx context.Context, azurePlat
 		Spec: azurev1.AzureClusterSpec{
 			ResourceGroup: azurePlatformStatus.ResourceGroupName,
 			NetworkSpec: azurev1.NetworkSpec{
+				APIServerLB: azurev1.LoadBalancerSpec{
+					Name: r.clusterName,
+				},
 				Vnet: azurev1.VnetSpec{
 					ResourceGroup: azurePlatformStatus.NetworkResourceGroupName,
 				},
@@ -64,6 +67,7 @@ func (r *ClusterReconciler) reconcileAzureCluster(ctx context.Context, azurePlat
 		azureCluster.Annotations = azureClusterCopy.Annotations
 		azureCluster.Spec.ResourceGroup = azureClusterCopy.Spec.ResourceGroup
 		azureCluster.Spec.NetworkSpec.Vnet.ResourceGroup = azureClusterCopy.Spec.NetworkSpec.Vnet.ResourceGroup
+		azureCluster.Spec.NetworkSpec.APIServerLB.Name = azureClusterCopy.Spec.NetworkSpec.APIServerLB.Name
 		azureCluster.Spec.AzureClusterClassSpec.Location = azureClusterCopy.Spec.AzureClusterClassSpec.Location
 		azureCluster.Spec.AzureClusterClassSpec.AzureEnvironment = azureClusterCopy.Spec.AzureClusterClassSpec.AzureEnvironment
 		return nil

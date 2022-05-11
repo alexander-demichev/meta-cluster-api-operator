@@ -67,6 +67,7 @@ var _ = Describe("Reconcile Azure cluster", func() {
 		Expect(azureCluster.Annotations).To(HaveKey(clusterv1.ManagedByAnnotation))
 		Expect(azureCluster.Spec.ResourceGroup).To(Equal(rg))
 		Expect(azureCluster.Spec.NetworkSpec.Vnet.ResourceGroup).To(Equal(networkRG))
+		Expect(azureCluster.Spec.NetworkSpec.APIServerLB.Name).To(Equal(r.clusterName))
 		Expect(azureCluster.Spec.AzureClusterClassSpec.Location).To(Equal(region))
 		Expect(azureCluster.Spec.AzureClusterClassSpec.AzureEnvironment).To(Equal(string(cloudName)))
 		Expect(azureCluster.Status.Ready).To(BeTrue())
@@ -86,6 +87,7 @@ var _ = Describe("Reconcile Azure cluster", func() {
 		}, azureCluster)).To(Succeed())
 		azureCluster.Spec.ResourceGroup = "foo"
 		azureCluster.Spec.NetworkSpec.Vnet.ResourceGroup = "foo"
+		azureCluster.Spec.NetworkSpec.APIServerLB.Name = "foo"
 		azureCluster.Spec.AzureClusterClassSpec.Location = "foo"
 		azureCluster.Spec.AzureClusterClassSpec.AzureEnvironment = "foo"
 		Expect(cl.Update(ctx, azureCluster)).To(Succeed())
