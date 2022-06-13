@@ -33,7 +33,10 @@ operator:
 	go build -o bin/cluster-capi-operator cmd/cluster-capi-operator/main.go
 
 unit: envtest
-	KUBEBUILDER_ASSETS=$(shell $(ENVTEST) --bin-dir=$(shell pwd)/bin use $(ENVTEST_K8S_VERSION) -p path) go test ./... -coverprofile cover.out
+	KUBEBUILDER_ASSETS=$(shell $(ENVTEST) --bin-dir=$(shell pwd)/bin use $(ENVTEST_K8S_VERSION) -p path) go test ./pkg/... ./assets/... -coverprofile cover.out
+
+e2e:
+	go test ./e2e/...
 
 # Run against the configured Kubernetes cluster in ~/.kube/config
 run: verify
